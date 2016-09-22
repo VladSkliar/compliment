@@ -46,23 +46,28 @@
     var csrftoken = getCookie('csrftoken');
       $('#checkName').click(function() {
           //alert($('#inputName').val())
-          var xhr = new XMLHttpRequest();
-          var data = {'name': $('#inputName').val()}
-          var json = JSON.stringify(data);
-          xhr.open("POST", window.location.origin+'/compliment/', true)
-          xhr.setRequestHeader('Content-Type', 'application/json');
-          xhr.setRequestHeader("X-CSRFToken", csrftoken);
-          xhr.withCredentials = true;
-          xhr.onreadystatechange = function() {
-              if (xhr.readyState == 4) {
-              if(xhr.status == 200) {
-                  data = JSON.parse(xhr.responseText)
-                  console.log(data['name'], data.compliment);
-                  $('#result').html('Рад тебя видеть снова, '+ data.compliment + ' ' + data.name)
-                  }
-              }
+          if ($('#inputName').val().length > 0){
+            var xhr = new XMLHttpRequest();
+            var data = {'name': $('#inputName').val()}
+            var json = JSON.stringify(data);
+            xhr.open("POST", window.location.origin+'/compliment/', true)
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            xhr.withCredentials = true;
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4) {
+                if(xhr.status == 200) {
+                    data = JSON.parse(xhr.responseText)
+                    console.log(data['name'], data.compliment);
+                    $('#result').html('Рад тебя видеть снова, '+ data.compliment + ' ' + data.name)
+                    }
+                }
+            }
+            xhr.send(json);
+          }else{
+            $('#result').html('Введите ваше имя');
           }
-          xhr.send(json);
+          
       });
     </script>
   </body>
